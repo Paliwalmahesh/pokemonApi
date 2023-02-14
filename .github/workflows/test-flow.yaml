@@ -25,7 +25,7 @@ jobs:
           name: pokemon-api-jar
           path: build/libs/demo-0.1-all.jar
   deploy:
-    needs: build and test
+    needs: build-and-test
     runs-on: ubuntu-latest
     steps:
       - name: Get Artifact
