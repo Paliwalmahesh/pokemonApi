@@ -9,14 +9,14 @@ import jakarta.inject.Inject;
 
 
 class DemoTest {
-//
-//    @Inject
-//    EmbeddedApplication<?> application;
 
-//
-//    @Test
-//    void testItWorks() {
-//        Assertions.assertTrue(application.isRunning());
-//    }
+    @Inject
+    EmbeddedApplication<?> application;
+
+
+    @Test
+    void testItWorks() {
+        Assertions.assertTrue(application.isRunning());
+    }
 
 }

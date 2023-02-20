@@ -13,6 +13,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.jetbrains:annotations:23.0.0'
     annotationProcessor("io.micronaut.data:micronaut-data-processor")
     annotationProcessor("io.micronaut:micronaut-http-validation")
     implementation("org.mockito:mockito-testng:0.4.30")
@@ -25,7 +26,7 @@ dependencies {
     implementation("io.micronaut.liquibase:micronaut-liquibase")
     implementation("io.micronaut:micronaut-management")
     testImplementation("org.assertj:assertj-core:3.6.1")
-
+    testImplementation("io.micronaut.test:micronaut-test-rest-assured")
 
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
