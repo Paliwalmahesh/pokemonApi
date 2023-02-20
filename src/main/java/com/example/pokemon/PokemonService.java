@@ -5,7 +5,6 @@ import com.example.speciality.Speciality;
 import com.example.speciality.SpecialityService;
 import jakarta.inject.Singleton;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Singleton
@@ -34,8 +33,6 @@ public class PokemonService {
       return "null value of Name is not allowed";
     } else if (pokemon.getImageUrl() == null) {
       return "null value of ImageUrl is not allowed";
-    } else if (pokemon.getSpeciality() == null) {
-      return "null value of Speciality is not allowed";
     }
     return null;
   }
@@ -57,10 +54,17 @@ public class PokemonService {
     }
   }
 
-  public Pokemon updatePokemon(Pokemon pokemon) {
+  public Pokemon updatePokemon(PokemonCreateForm pokemonCreate, long id) {
+    System.out.println("--------called--------");
+    Speciality speciality = specialityService.get(pokemonCreate.getSpecialityId());
+    Pokemon pokemon = new Pokemon();
+    pokemon.setName(pokemonCreate.getName());
+    pokemon.setImageUrl(pokemonCreate.getImageUrl());
+    pokemon.setSpeciality(speciality);
     if (pokemonValidate(pokemon) != null) {
       throw new PokemonValidationException(pokemonValidate(pokemon));
-    } else if (existByName(pokemon)) {
+    } else if (existById(id)) {
+      pokemon.setId(id);
       return pokemonRepositary.update(pokemon);
     } else {
       throw new PokemonValidationException("Pokemon Does not exist");
@@ -76,6 +80,15 @@ public class PokemonService {
   public boolean existByName(Pokemon pokemon) {
 
     if (pokemonRepositary.findByName(pokemon.getName()).isPresent()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean existById(long id) {
+
+    if (pokemonRepositary.findById(id).isPresent()) {
       return true;
     } else {
       return false;

@@ -2,6 +2,7 @@ package com.example;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import io.restassured.specification.RequestSpecification;
 import org.hamcrest.Matchers;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 @MicronautTest
@@ -22,17 +23,33 @@ class TestIntegration {
                 .body("speciality.id", Matchers.equalTo(1))
                 .body("speciality.name", Matchers.equalTo("Grass"));
     }
+    @Test
+    void testUpdatePokemon(@NotNull RequestSpecification spec) {
+        spec.given()
+                .pathParam("id", 1)
+                .body("{\"name\": \"TestPokemonChange\", \"specialityId\": 1, \"imageUrl\": \"TestPokemon.com\"}")
+                .header("Content-Type", "application/json")
+                .when()
+                .put("/pokemon/{id}")
+                .then()
+                .statusCode(200)
+                .assertThat()
+                .body("id", Matchers.notNullValue())
+                .body("name", Matchers.equalTo("TestPokemonChange"))
+                .body("speciality.id", Matchers.equalTo(1))
+                .body("speciality.name", Matchers.equalTo("Grass"));
+    }
 
     @Test
     void testGetPokemonById(RequestSpecification spec) {
         spec.given()
-                .pathParam("id", 2)
+                .pathParam("id", 1)
                 .when()
                 .get("/pokemon/{id}")
                 .then()
                 .statusCode(200)
                 .assertThat()
-                .body("id", Matchers.equalTo(2))
+                .body("id", Matchers.equalTo(1))
                 .body("name", Matchers.equalTo("TestPokemon"))
                 .body("speciality.id", Matchers.equalTo(1))
                 .body("speciality.name", Matchers.equalTo("Grass"));
@@ -42,6 +59,8 @@ class TestIntegration {
 
     @Test
     void testDeleteById(RequestSpecification spec) {
-        spec.given().pathParam("id", 2).when().delete("/pokemon/{id}").then().statusCode(200);
+        spec.given().pathParam("id", 1).
+                when().delete("/pokemon/{id}").
+                then().statusCode(200);
     }
 }

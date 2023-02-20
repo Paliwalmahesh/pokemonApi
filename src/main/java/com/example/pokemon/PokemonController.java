@@ -25,9 +25,9 @@ public class PokemonController {
     return HttpResponse.ok(pokemonService.getById(id));
   }
 
-  @Put
-  public Pokemon update(@Body Pokemon pokemon) {
-    return pokemonService.updatePokemon(pokemon);
+  @Put(value = "/{id}" )
+  public Pokemon update(@Body PokemonCreateForm pokemon,@PathVariable Long id) {
+    return pokemonService.updatePokemon(pokemon,id);
   }
 
   @Post
